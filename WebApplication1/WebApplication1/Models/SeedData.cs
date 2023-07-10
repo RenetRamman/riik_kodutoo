@@ -37,7 +37,7 @@ public static class SeedData
                 new EventModel
                 {
                     Title = "asd qwe",
-                    Date = DateTime.Parse("1969-2-14"),
+                    Date = DateTime.Parse("2018-3-14"),
                     Location = "Tartu",
                     AdditionalInfo = ""
                 }

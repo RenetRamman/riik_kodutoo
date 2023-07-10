@@ -27,43 +27,29 @@
 
                 <div class="text-start bg-white">
                     <ol>
-                        <li>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    aenean commodo
-                                </div>
-                                <div class="col-md-2">
-                                    14.02.2016
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-sm p-0">
-                                        OSAVÕTJAD
-                                    </button>
-                                    <button type="button" class="btn btn-sm p-0">
-                                        X
-                                    </button>
-                                </div>
-                            </div>
-                        </li>
 
-                        <li>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    Fusce ex dui, finibus eu  luctus vel
+                        @foreach (var item in Model)
+                        {
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-sm p-0">
+                                            OSAVÕTJAD
+                                        </button>
+                                        <button type="button" class="btn btn-sm p-0">
+                                            X
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    18.02.2016
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-sm p-0">
-                                        OSAVÕTJAD
-                                    </button>
-                                    <button type="button" class="btn btn-sm p-0">
-                                        X
-                                    </button>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        }
+
                     </ol>
 
                     <div>

@@ -12,6 +12,7 @@ namespace WebApplication1.Models
         public string? Title { get; set; }
 
         [Display(Name = "Toimumisaeg")]
+        [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
         [Display(Name = "Toimumise koht")]
