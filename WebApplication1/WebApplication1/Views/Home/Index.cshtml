@@ -30,24 +30,27 @@
 
                         @foreach (var item in Model)
                         {
-                            <li>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        @Html.DisplayFor(modelItem => item.Title)
+                            @if (item.Date < DateTime.Today)
+                            {
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </div>
+                                        <div class="col-md-2">
+                                            @Html.DisplayFor(modelItem => item.Date)
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-sm p-0">
+                                                OSAVÕTJAD
+                                            </button>
+                                            <button type="button" class="btn btn-sm p-0">
+                                                X
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        @Html.DisplayFor(modelItem => item.Date)
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button type="button" class="btn btn-sm p-0">
-                                            OSAVÕTJAD
-                                        </button>
-                                        <button type="button" class="btn btn-sm p-0">
-                                            X
-                                        </button>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
+                            }
                         }
 
                     </ol>
