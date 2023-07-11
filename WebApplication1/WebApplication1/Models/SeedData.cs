@@ -15,11 +15,9 @@ public static class SeedData
                 DbContextOptions<WebApplication1Context>>()))
         {
             // Look for any movies.
-            if (context.EventModel.Any())
+            if (!context.EventModel.Any())
             {
-                return;   // DB has been seeded
-            }
-            context.EventModel.AddRange(
+                context.EventModel.AddRange(
                 new EventModel
                 {
                     Title = "aenean commodo",
@@ -42,6 +40,24 @@ public static class SeedData
                     AdditionalInfo = ""
                 }
             );
+            }
+
+
+            // Look for any movies.
+            if (!context.PersonModel.Any())
+            {
+                context.PersonModel.AddRange(
+                new PersonModel
+                {
+                    FirstName = "Bob",
+                    LastName = "Bobson",
+                    PersonalId = 1234567890,
+                    PayingMethod = false,
+                    AdditionalInfo = ""
+                }
+            );
+            }
+
             context.SaveChanges();
         }
     }

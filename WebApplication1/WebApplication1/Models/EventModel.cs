@@ -20,5 +20,8 @@ namespace WebApplication1.Models
 
         [Display(Name = "Lisainfo")]
         public string? AdditionalInfo { get; set; }
+
+        public List<EventPersonModel>? Persons { get; set; }
+        public List<EventCompanyModel>? Companies { get; set; }
     }
 }
