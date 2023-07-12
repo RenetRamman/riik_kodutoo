@@ -30,7 +30,7 @@
 
                         @foreach (var item in Model)
                         {
-                            @if (item.Date < DateTime.Today)
+                            @if (item.Date < DateTime.Today | item.Date >= DateTime.Today)
                             {
                                 <li>
                                     <div class="row">

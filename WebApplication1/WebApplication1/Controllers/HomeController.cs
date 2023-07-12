@@ -41,5 +41,23 @@ namespace WebApplication1.Controllers
         }
 
 
+
+        // POST: EventModels/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ID,Title,Date,Location,AdditionalInfo")] EventModel eventModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(eventModel);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(eventModel);
+        }
+
+
     }
 }
