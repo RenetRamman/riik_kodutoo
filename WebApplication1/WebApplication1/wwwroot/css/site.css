@@ -1,3 +1,12 @@
+:root {
+    --riik-blue: rgb(0,90,161);
+    --riik-not-white: rgb(238,242,245);
+    --riik-gray: rgb(224,224,224);
+    --riik-dark: rgb(55,55,55);
+    --riik-padding-x: 30%;
+}
+
+
 html {
   font-size: 14px;
 }
@@ -18,5 +27,29 @@ body {
 }
 
 .jumbotron {
-    background-color: rgb(0, 95, 170);
+    background-color: var(--riik-blue);
+}
+
+.padded {
+    padding-right: var(--riik-padding-x);
+    padding-left: var(--riik-padding-x);
+}
+
+.text-riik-blue {
+    color: var(--riik-blue);
+}
+
+.bg-riik-not-white {
+    background-color: var(--riik-not-white);
+}
+
+.btn-riik-primary {
+    background-color: var(--riik-blue);
+    color: white;
+    padding-inline: 5%;
+}
+
+.btn-riik-secondary {
+    background-color: var(--riik-gray);
+    padding-inline: 5%;
 }

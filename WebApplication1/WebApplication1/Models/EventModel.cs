@@ -15,7 +15,7 @@ namespace WebApplication1.Models
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
-        [Display(Name = "Toimumise koht")]
+        [Display(Name = "Koht")]
         public string? Location { get; set; }
 
         [Display(Name = "Lisainfo")]
