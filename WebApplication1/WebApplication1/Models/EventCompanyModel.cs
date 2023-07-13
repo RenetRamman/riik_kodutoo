@@ -2,6 +2,7 @@
 {
     public class EventCompanyModel
     {
-        public int ID { get; set; }        
+        public int ID { get; set; }
+        public int EventModelID { get; set; }
     }
 }

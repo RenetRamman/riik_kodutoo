@@ -2,6 +2,12 @@
 
 @{
     ViewData["Title"] = "Details";
+
+    IEnumerable<PersonModel>? persons = ViewData["Persons"] as IEnumerable<PersonModel>;
+    IEnumerable<EventPersonModel>? eventPersons = ViewData["EventPersons"] as IEnumerable<EventPersonModel>;
+
+    IEnumerable<CompanyModel>? companies = ViewData["Companies"] as IEnumerable<CompanyModel>;
+    IEnumerable<EventCompanyModel>? eventCompanies = ViewData["EventCompanies"] as IEnumerable<EventCompanyModel>;
 }
 
 <h1>Details</h1>

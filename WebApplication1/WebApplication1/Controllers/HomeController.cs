@@ -40,9 +40,15 @@ namespace WebApplication1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        // GET: EventModels/Details/5
+        // GET: Home/Osalejad/5
         public async Task<IActionResult> Osalejad(int? id)
         {
+
+            ViewData["Persons"] = await _context.PersonModel.ToListAsync();
+            ViewData["Companies"] = await _context.CompanyModel.ToListAsync();
+            ViewData["EventPersons"] = _context.EventPersonModel.Where(s => s.EventModelID == id);
+            ViewData["EventCompanies"] = _context.EventCompanyModel.Where(s => s.EventModelID == id);
+
             if (id == null || _context.EventModel == null)
             {
                 return NotFound();
