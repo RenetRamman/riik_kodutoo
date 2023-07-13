@@ -27,36 +27,33 @@
 
                 <div class="text-start bg-white">
                     <ol>
-
-                        @foreach (var item in Model)
+                        
+                        @foreach (var item in Model.Where (s => s.Date >= DateTime.Now))
                         {
-                            @if (item.Date < DateTime.Today | item.Date >= DateTime.Today)
-                            {
-                                <li>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            @Html.DisplayFor(modelItem => item.Title)
-                                        </div>
-                                        <div class="col-md-2">
-                                            @Html.DisplayFor(modelItem => item.Date)
-                                        </div>
-                                        <div class="col-md-4">
-                                            <button type="button" class="btn btn-sm p-0">
-                                                OSAVÕTJAD
-                                            </button>
-                                            <button type="button" class="btn btn-sm p-0">
-                                                X
-                                            </button>
-                                        </div>
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @Html.DisplayFor(modelItem => item.Title)
                                     </div>
-                                </li>
-                            }
+                                    <div class="col-md-2">
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-sm p-0">
+                                            OSAVÕTJAD
+                                        </button>
+                                        <button type="button" class="btn btn-sm p-0">
+                                            X
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
                         }
 
                     </ol>
 
                     <div>
-                        LISA ÜRITUS
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="UrituseLisamine">LISA ÜRITUS</a>
                     </div>
 
                 </div>
@@ -70,33 +67,29 @@
                 </div>
 
                 <ol class="text-start bg-white">
-                    <li>
-                        <div class="row">
-                            <div class="col-md-6">
-                                aenean commodo
+                    
+                    @foreach (var item in Model.Where(s => s.Date < DateTime.Now))
+                    {
+                        <li>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-sm p-0">
+                                        OSAVÕTJAD
+                                    </button>
+                                    <button type="button" class="btn btn-sm p-0">
+                                        X
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                14.01.2016
-                            </div>
-                            <div class="col-md-3">
-                                OSAVÕTJAD X
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    }
 
-                    <li>
-                        <div class="row">
-                            <div class="col-md-6">
-                                Fusce ex dui, finibus eu  luctus vel
-                            </div>
-                            <div class="col-md-3">
-                                18.12.2015
-                            </div>
-                            <div class="col-md-3">
-                                OSAVÕTJAD X
-                            </div>
-                        </div>
-                    </li>
                 </ol>
 
             </div>
