@@ -40,6 +40,24 @@ namespace WebApplication1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        // GET: EventModels/Details/5
+        public async Task<IActionResult> Osalejad(int? id)
+        {
+            if (id == null || _context.EventModel == null)
+            {
+                return NotFound();
+            }
+
+            var eventModel = await _context.EventModel
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (eventModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(eventModel);
+        }
+
 
 
         // POST: EventModels/Create
