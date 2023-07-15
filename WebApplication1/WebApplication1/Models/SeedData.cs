@@ -43,7 +43,7 @@ public static class SeedData
             }
 
 
-            // Look for any movies.
+            // Look for any persons.
             if (!context.PersonModel.Any())
             {
                 context.PersonModel.AddRange(
@@ -55,10 +55,26 @@ public static class SeedData
                     PayingMethod = false,
                     AdditionalInfo = ""
                 }
-            );
+                );
             }
 
-            context.SaveChanges();
+            // Look for any persons participating in specific events.
+            if (!context.EventPersonModel.Any())
+            {
+                context.EventPersonModel.AddRange(
+                new EventPersonModel
+                {
+                    EventModelID = 4,
+                    PersonModelID = 1
+                },
+                new EventPersonModel
+                {
+                    EventModelID = 7,
+                    PersonModelID = 1
+                }
+            );
+            }
+                context.SaveChanges();
         }
     }
 }
