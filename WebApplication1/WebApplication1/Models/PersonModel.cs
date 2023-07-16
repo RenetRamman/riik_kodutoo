@@ -18,7 +18,7 @@ namespace WebApplication1.Models
         public int PersonalId { get; set; }
 
         [Display(Name = "Osavõtumaksu maksmise viis")]
-        public bool PayingMethod { get; set; } // 0 = cash  1 = transfer
+        public string? PayingMethod { get; set; } // 0 = cash  1 = transfer
         
         [Display(Name = "Lisainfo")]
         public string? AdditionalInfo { get; set; } // Max 1500 characters

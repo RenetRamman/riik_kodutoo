@@ -5,8 +5,6 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
     <div class="container">
 
@@ -75,12 +73,8 @@
                                     @Html.DisplayFor(modelItem => item.Date)
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-sm p-0">
-                                        OSAVÕTJAD
-                                    </button>
-                                    <button type="button" class="btn btn-sm p-0">
-                                        X
-                                    </button>
+                                    <a asp-action="Osalejad" asp-route-id="@item.ID">OSAVÕTJAD</a>
+                                    <a asp-action="Delete" asp-route-id="@item.ID">X</a>
                                 </div>
                             </div>
                         </li>

@@ -52,7 +52,7 @@ public static class SeedData
                     FirstName = "Bob",
                     LastName = "Bobson",
                     PersonalId = 1234567890,
-                    PayingMethod = false,
+                    PayingMethod = "transfer",
                     AdditionalInfo = ""
                 }
                 );

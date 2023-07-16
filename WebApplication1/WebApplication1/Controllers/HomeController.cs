@@ -40,21 +40,11 @@ namespace WebApplication1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        // GET: Home/Osalejad/5
+        /*// GET: Home/Osalejad/5
         public async Task<IActionResult> Osalejad(int? id)
         {
             ViewBag.Id = id;
-            ViewData["Persons"] = await _context.PersonModel.ToListAsync();
-            ViewData["Companies"] = await _context.CompanyModel.ToListAsync();
-            ViewData["EventPersons"] = _context.EventPersonModel.Where(s => s.EventModelID == id);
-            ViewData["EventCompanies"] = _context.EventCompanyModel.Where(s => s.EventModelID == id);
-            /*ViewData["ParticipatingPersons"] = await _context.PersonModel.Include(a => a.Events.Where(w => w.EventModelID == id)).ToListAsync();*/
-
-            /*var query = from m in _context.PersonModel
-                        from m2 in _context.EventPersonModel
-                        from m3 in _context.EventModel
-                        where m.ID == m2.PersonModelID && m2.EventModelID == id
-                        select m;*/
+            ViewData["Persons"] = new PersonModel();
             var query = from personmodel in _context.PersonModel
                         from participation in _context.EventPersonModel
                         where personmodel.ID == participation.PersonModelID && participation.EventModelID == id
@@ -75,16 +65,43 @@ namespace WebApplication1.Controllers
             }
 
             return View(eventModel);
+        }*/
+
+        // GET: Home/Osalejad/5
+        public async Task<IActionResult> Osalejad(int? id)
+        {
+            ViewBag.Id = id;
+            ViewData["Persons"] = new PersonModel();
+            var query = from personmodel in _context.PersonModel
+                        from participation in _context.EventPersonModel
+                        where personmodel.ID == participation.PersonModelID && participation.EventModelID == id
+                        select personmodel;
+
+            ViewData["ParticipatingPersons"] = await query.ToListAsync();
+
+            if (id == null || _context.EventModel == null)
+            {
+                return NotFound();
+            }
+
+            var eventModel = await _context.EventModel
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (eventModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(new ParticipantsViewModel(eventModel));
         }
 
 
 
-        // POST: EventModels/Create
+        // POST: Home/CreateEvent
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,Date,Location,AdditionalInfo")] EventModel eventModel)
+        public async Task<IActionResult> CreateEvent([Bind("ID,Title,Date,Location,AdditionalInfo")] EventModel eventModel)
         {
             if (ModelState.IsValid)
             {
@@ -93,6 +110,54 @@ namespace WebApplication1.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(eventModel);
+        }
+
+        // POST: EventModels/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePerson(ParticipantsViewModel pm, int? id)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine("-------------------");
+                Console.WriteLine(pm.eventPersonModel.PersonModelID);
+                _context.Add(pm.personModel);
+                await _context.SaveChangesAsync();
+
+                EventPersonModel eventPerson = new EventPersonModel()
+                {
+                    PersonModelID = pm.personModel.ID,
+                    EventModelID = pm.eventPersonModel.EventModelID
+                };
+                _context.Add(eventPerson);
+                await _context.SaveChangesAsync();
+                /*CreateEventPerson(pm.personModel.ID, id);*/
+                return RedirectToAction(nameof(Index));
+            }
+            return View(pm);
+        }
+
+
+        // POST: EventModels/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async void CreateEventPerson(int? idPerson, int? idEvent)
+        {
+
+            EventPersonModel epm = new EventPersonModel()
+            {
+                PersonModelID = idEvent.Value,
+                EventModelID = idPerson.Value
+            };
+                
+
+            _context.Add(epm);
+            await _context.SaveChangesAsync();
         }
 
 
