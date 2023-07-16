@@ -7,16 +7,16 @@ namespace WebApplication1.Models
     {
         public int ID { get; set; }
 
-        [Display(Name = "Ettevõtte juriidiline nimi")]
+        [Display(Name = "Nimi")]
         public string? Name { get; set; }
 
-        [Display(Name = "Ettevõtte registrikood")]
+        [Display(Name = "Registrikood")]
         public string? Code { get; set; }
 
-        [Display(Name = "Ettevõttest tulevate osavõtjate arv")]
+        [Display(Name = "Osavõtjate arv")]
         public int NrOfAtendees { get; set; }
 
-        [Display(Name = "Osavõtumaksu maksmise viis")]
+        [Display(Name = "Maksmisviis")]
         public string? PayingMethod { get; set; } // 0 = cash  1 = transfer
 
         [Display(Name = "Lisainfo")]

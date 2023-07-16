@@ -1,0 +1,83 @@
+﻿@model WebApplication1.Models.PersonModel
+
+@{
+    ViewData["Title"] = "Osavõtja info";
+}
+
+<h2>Osavõtja info</h2>
+
+<div class="container bg-white padded py-5">
+
+    <h3 class="text-riik-blue">Osavõtja info</h3>
+
+    <form asp-action="EditPerson">
+        <input type="hidden" asp-for="ID" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row pb-2">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label"></label>:
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label"></label>:
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="PersonalId" class="control-label"></label>:
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input asp-for="PersonalId" class="form-control" />
+                    <span asp-validation-for="PersonalId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="AdditionalInfo" class="control-label"></label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input asp-for="AdditionalInfo" class="form-control" />
+                    <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <a asp-action="Index" class="btn btn-sm btn-riik-secondary">Tagasi</a>
+            <input type="submit" value="Salvesta" class="btn btn-sm btn-riik-primary" />
+        </div>
+    </form>
+
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

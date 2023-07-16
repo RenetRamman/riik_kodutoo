@@ -11,13 +11,13 @@ namespace WebApplication1.Models
         [Display(Name = "Eesnimi")]
         public string? FirstName { get; set; }
 
-        [Display(Name = "Perekonnanimi")]
+        [Display(Name = "Perenimi")]
         public string? LastName { get; set; }
 
         [Display(Name = "Isikukood")]
         public int PersonalId { get; set; }
 
-        [Display(Name = "Osavõtumaksu maksmise viis")]
+        [Display(Name = "Maksmisviis")]
         public string? PayingMethod { get; set; } // 0 = cash  1 = transfer
         
         [Display(Name = "Lisainfo")]

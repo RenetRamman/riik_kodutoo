@@ -8,6 +8,7 @@
 
     
     IEnumerable<PersonModel>? participatingPersons = ViewData["ParticipatingPersons"] as IEnumerable<PersonModel>;
+    IEnumerable<CompanyModel>? ParticipatingCompanies = ViewData["ParticipatingCompanies"] as IEnumerable<CompanyModel>;
 }
 
 @*PersonModel? persons = ViewData["Persons"] as PersonModel;*@
@@ -48,7 +49,7 @@
             <dd class="col-md-9">
                 @Html.DisplayFor(model => model.eventModel.AdditionalInfo)
             </dd>
-            <!--Osalejad-->
+            <!--Osalejad - Eraisikud-->
             <dt class="col-md-3">
                 Osavõtjad:
             </dt>
@@ -68,10 +69,42 @@
                                         @Html.DisplayFor(modelItem => person.PersonalId)
                                     </div>
                                     <div class="col-md-2">
-                                        <a asp-action="Osaleja" asp-route-id="@person.ID">VAATA</a>
+                                        <a asp-action="OsalejaEraisik" asp-route-id="@person.ID">VAATA</a>
                                     </div>
                                     <div class="col-md-3">
-                                        <a asp-action="Kustuta" asp-route-id="@person.ID">KUSTUTA</a>
+                                        <a asp-action="KustutaEraisik" asp-route-id="@person.ID">KUSTUTA</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
+                </ol>
+            </dd>
+
+            <!--Osalejad - Ettevõtted-->
+            <dt class="col-md-3">
+                
+            </dt>
+            <dd class="col-md-9">
+                <ol class="px-3">
+                    @if (participatingPersons != null)
+                    {
+                        @foreach (var company in ParticipatingCompanies)
+                        {
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        @Html.DisplayFor(modelItem => company.Name)
+                                        @Html.DisplayFor(modelItem => company.Code)
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DisplayFor(modelItem => company.NrOfAtendees)
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a asp-action="OsalejaEttevõte" asp-route-id="@company.ID">VAATA</a>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a asp-action="KustutaEttevõte" asp-route-id="@company.ID">KUSTUTA</a>
                                     </div>
                                 </div>
                             </li>
@@ -84,7 +117,15 @@
 
     <!--Osavõtjate lisamine-->
     <h4 class="text-riik-blue">Osavõtjate lisamine</h4>
-    
+
+    <form id="form1" runat="server">
+        <input type="radio" id="eraisik" name="osaleja_tyyp" value="eraisik">
+        <label for="eraisik">Eraisik</label><br>
+        <input type="radio" id="ettevõte" name="osaleja_tyyp" value="ettevõte">
+        <label for="ettevõte">Ettevõte</label><br>
+    </form>
+
+    <!--Eraisiku lisamine-->
     <div class="container px-0">
         <form asp-action="CreatePerson">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -131,7 +172,7 @@
             <div class="row pb-2">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label asp-for="personModel.PayingMethod" class="control-label"></label>
+                        <label asp-for="personModel.PayingMethod" class="control-label"></label>:
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -144,7 +185,7 @@
             <div class="row pb-2">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label asp-for="personModel.AdditionalInfo" class="control-label"></label>
+                        <label asp-for="personModel.AdditionalInfo" class="control-label"></label>:
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -156,6 +197,86 @@
             </div>
 
             <input asp-for="eventPersonModel.EventModelID" type="hidden" value="@ViewBag.id" />
+
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-sm btn-riik-secondary">Tagasi</a>
+                <input type="submit" value="Lisa" class="btn btn-sm btn-riik-primary" />
+            </div>
+        </form>
+    </div>
+
+    <!--Ettevõtte lisamine-->
+    <div class="container px-0 py-5">
+        <form asp-action="CreateCompany">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row pb-2">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="companyModel.Name" class="control-label"></label>:
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <input asp-for="companyModel.Name" class="form-control" />
+                        <span asp-validation-for="companyModel.Name" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="companyModel.Code" class="control-label"></label>:
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <input asp-for="companyModel.Code" class="form-control" />
+                        <span asp-validation-for="companyModel.Code" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="companyModel.NrOfAtendees" class="control-label"></label>:
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <input asp-for="companyModel.NrOfAtendees" class="form-control" />
+                        <span asp-validation-for="companyModel.NrOfAtendees" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="companyModel.PayingMethod" class="control-label"></label>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <input asp-for="companyModel.PayingMethod" class="form-control" />
+                        <span asp-validation-for="companyModel.PayingMethod" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="companyModel.AdditionalInfo" class="control-label"></label>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <input asp-for="companyModel.AdditionalInfo" class="form-control" />
+                        <span asp-validation-for="companyModel.AdditionalInfo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <input asp-for="eventCompanyModel.EventModelID" type="hidden" value="@ViewBag.id" />
 
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-sm btn-riik-secondary">Tagasi</a>

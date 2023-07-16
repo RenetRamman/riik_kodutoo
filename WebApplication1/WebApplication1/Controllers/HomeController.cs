@@ -40,44 +40,21 @@ namespace WebApplication1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        /*// GET: Home/Osalejad/5
-        public async Task<IActionResult> Osalejad(int? id)
-        {
-            ViewBag.Id = id;
-            ViewData["Persons"] = new PersonModel();
-            var query = from personmodel in _context.PersonModel
-                        from participation in _context.EventPersonModel
-                        where personmodel.ID == participation.PersonModelID && participation.EventModelID == id
-                        select personmodel;
-
-            ViewData["ParticipatingPersons"] = await query.ToListAsync();
-
-            if (id == null || _context.EventModel == null)
-            {
-                return NotFound();
-            }
-
-            var eventModel = await _context.EventModel
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (eventModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(eventModel);
-        }*/
-
         // GET: Home/Osalejad/5
         public async Task<IActionResult> Osalejad(int? id)
         {
             ViewBag.Id = id;
             ViewData["Persons"] = new PersonModel();
-            var query = from personmodel in _context.PersonModel
+            var queryPerson = from personmodel in _context.PersonModel
                         from participation in _context.EventPersonModel
                         where personmodel.ID == participation.PersonModelID && participation.EventModelID == id
                         select personmodel;
-
-            ViewData["ParticipatingPersons"] = await query.ToListAsync();
+            ViewData["ParticipatingPersons"] = await queryPerson.ToListAsync();
+            var queryCompany = from companymodel in _context.CompanyModel
+                        from participation in _context.EventCompanyModel
+                        where companymodel.ID == participation.CompanyModelID && participation.EventModelID == id
+                        select companymodel;
+            ViewData["ParticipatingCompanies"] = await queryCompany.ToListAsync();
 
             if (id == null || _context.EventModel == null)
             {
@@ -94,6 +71,48 @@ namespace WebApplication1.Controllers
             return View(new ParticipantsViewModel(eventModel));
         }
 
+
+        // GET: Home/OsalejaEraisik/5
+        public async Task<IActionResult> OsalejaEraisik(int? id)
+        {
+            ViewBag.Id = id;
+            if (id == null || _context.PersonModel == null)
+            {
+                return NotFound();
+            }
+
+            var personModel = await _context.PersonModel
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (personModel == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["person"] = personModel;
+
+            return View(personModel);
+        }
+
+        // GET: Home/OsalejaEttevõte/5
+        public async Task<IActionResult> OsalejaEttevõte(int? id)
+        {
+            ViewBag.Id = id;
+            if (id == null || _context.CompanyModel == null)
+            {
+                return NotFound();
+            }
+
+            var companyModel = await _context.CompanyModel
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (companyModel == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["person"] = companyModel;
+
+            return View(companyModel);
+        }
 
 
         // POST: Home/CreateEvent
@@ -112,7 +131,7 @@ namespace WebApplication1.Controllers
             return View(eventModel);
         }
 
-        // POST: EventModels/Create
+        // POST: CreatePerson
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -122,8 +141,6 @@ namespace WebApplication1.Controllers
 
             if (ModelState.IsValid)
             {
-                Console.WriteLine("-------------------");
-                Console.WriteLine(pm.eventPersonModel.PersonModelID);
                 _context.Add(pm.personModel);
                 await _context.SaveChangesAsync();
 
@@ -140,26 +157,165 @@ namespace WebApplication1.Controllers
             return View(pm);
         }
 
-
-        // POST: EventModels/Create
+        // POST: CreateCompany
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async void CreateEventPerson(int? idPerson, int? idEvent)
+        public async Task<IActionResult> CreateCompany(ParticipantsViewModel pm, int? id)
         {
 
-            EventPersonModel epm = new EventPersonModel()
+            if (ModelState.IsValid)
             {
-                PersonModelID = idEvent.Value,
-                EventModelID = idPerson.Value
-            };
-                
+                _context.Add(pm.companyModel);
+                await _context.SaveChangesAsync();
 
-            _context.Add(epm);
+                EventCompanyModel eventCompany = new EventCompanyModel()
+                {
+                    CompanyModelID = pm.companyModel.ID,
+                    EventModelID = pm.eventCompanyModel.EventModelID
+                };
+                _context.Add(eventCompany);
+                await _context.SaveChangesAsync();
+                /*CreateEventPerson(pm.personModel.ID, id);*/
+                return RedirectToAction(nameof(Index));
+            }
+            return View(pm);
+        }
+
+        public async Task<IActionResult> KustutaUritus(int id)
+        {
+            if (_context.EventModel == null)
+            {
+                return Problem("Entity set 'WebApplication1Context.EventModel'  is null.");
+            }
+            var eventModel = await _context.EventModel.FindAsync(id);
+            if (eventModel != null)
+            {
+                _context.EventModel.Remove(eventModel);
+            }
+
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> KustutaEraisik(int id)
+        {
+            if (_context.PersonModel == null)
+            {
+                return Problem("Entity set 'WebApplication1Context.PersonModel'  is null.");
+            }
+            if (_context.EventPersonModel == null)
+            {
+                return Problem("Entity set 'WebApplication1Context.EventPersonModel'  is null.");
+            }
+
+            var queryEventPerson = from ecm in _context.EventPersonModel
+                                    where ecm.PersonModelID == id
+                                    select ecm;
+            var eventPersonModels = await queryEventPerson.ToListAsync();
+
+            foreach (EventPersonModel ecm in eventPersonModels)
+            {
+                _context.EventPersonModel.Remove(ecm);
+            }
+            await _context.SaveChangesAsync();
+
+            var personModel = await _context.PersonModel.FindAsync(id);
+            if (personModel != null)
+            {
+                _context.PersonModel.Remove(personModel);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> KustutaEttevõte(int id)
+        {
+            if (_context.CompanyModel == null)
+            {
+                return Problem("Entity set 'WebApplication1Context.CompanyModel'  is null.");
+            }
+            if (_context.EventCompanyModel == null)
+            {
+                return Problem("Entity set 'WebApplication1Context.EventCompanyModel'  is null.");
+            }
+
+            var queryEventCompany = from ecm in _context.EventCompanyModel
+                               where ecm.CompanyModelID == id
+                               select ecm;
+            var eventCompanyModels = await queryEventCompany.ToListAsync();
+
+            foreach (EventCompanyModel ecm in eventCompanyModels)
+            {
+                _context.EventCompanyModel.Remove(ecm);
+            }
+            await _context.SaveChangesAsync();
+
+            var companyModel = await _context.CompanyModel.FindAsync(id);
+            if (companyModel != null)
+            {
+                _context.CompanyModel.Remove(companyModel);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
 
+
+        // POST: Home/EditPerson/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPerson(PersonModel pm, int? id)
+        {
+            if (id != pm.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(pm);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(pm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCompany(CompanyModel pm, int? id)
+        {
+            if (id != pm.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(pm);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(pm);
+        }
     }
 }

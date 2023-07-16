@@ -43,6 +43,10 @@ body {
     background-color: var(--riik-not-white);
 }
 
+.bg-riik-dark {
+    background-color: var(--riik-dark);
+}
+
 .btn-riik-primary {
     background-color: var(--riik-blue);
     color: white;

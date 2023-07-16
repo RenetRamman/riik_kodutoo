@@ -4,5 +4,6 @@
     {
         public int ID { get; set; }
         public int EventModelID { get; set; }
+        public int CompanyModelID { get; set; }
     }
 }
