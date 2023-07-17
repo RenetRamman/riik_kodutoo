@@ -33,3 +33,12 @@ Uute eraisikute ja ettevõtete osavõtjateks lisamiseks tuleb 'Osavõtjate lisam
 
 Osavõtjate andmeid saab uuendada 'Osavõtjad' lehel osavõtja järel 'VAATA' nupule vajutades ja 'Osavõtja info' lehele navigeerides. Sellel lehel saab sisestada osavõtjale uue info ja selle salvestada, vajutades nupule 'Salvesta'. Uuendada saab nii eraisiku, kui ka ettevõtte andmeid.
 
+### Rakenduse ülesehitus
+
+**Views/Home** kaustas asuvad cshtml failid (vaated), mida kasutatakse veebirakenduses andmete näitamiseks
+
+**Models** kaustas on mudelid andmebaasis asuvate tabelite kohta. Neid mudeleid kasutatakse vaadetes erinevate tabelite andmete näitamiseks
+
+**Controllers/HomeController** on kontroller, mis käsitleb POST ja GET päringuid, töötleb andmeid, teeb päringuid andmebaasi ja saadab sobivad mudelid vaadetele.
+
+Rakendusel puuduvad testid. 
